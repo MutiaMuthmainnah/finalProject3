@@ -1,8 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-const product = require('./product');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -11,34 +8,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models,Product);
+      Category.hasMany(models.Product);
     }
   }
-  Category.init({
-    type: {
-      type : DataTypes.STRING,
-      allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Type cannot be empty",
-          },
-        },
+  Category.init(
+    {
+      type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      sold_product_amount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+      },
     },
-    sold_product_amount: {
-      type : DataTypes.STRING,
-      allowNull: false,
-        validate: {
-          isInt: true,
-          notEmpty: {
-            msg: "Cannot be empty",
-          },
-        },
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'Category',
-  });
+    {
+      sequelize,
+      modelName: "Category",
+    }
+  );
   return Category;
 };

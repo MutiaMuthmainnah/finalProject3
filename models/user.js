@@ -1,5 +1,6 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+const { hashPassword, comparePassword } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -8,80 +9,69 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      this.belongsTo(models,Category);
-      this.belongsTo(models.Product);
-      this.belongsTo(models.TransactionHistory);
+      this.hasMany(models.TransactionHistory);
     }
   }
-  User.init({
-    full_name: {
-      type : DataTypes.STRING,
-      allowNull: false,
+  User.init(
+    {
+      full_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
         validate: {
-          notEmpty: {
-            msg: "Full Name cannot be empty",
-          },
+          isEmail: true,
         },
-    },
-    email: {
-      type : DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-        notEmpty: {
-          msg: "Email cannot be empty",
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [6, 10],
+        },
+      },
+      gender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isIn: [["male", "female"]],
+        },
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isIn: [["admin", "customer"]],
+        },
+      },
+      balance: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          min: 0,
+          max: 100000000,
         },
       },
     },
-    password: {
-      type : DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        min : 6,
-        max : 10,
-        notEmpty: {
-          msg: "Password cannot be empty",
+    {
+      sequelize,
+      modelName: "User",
+      hooks: {
+        beforeCreate: (user) => {
+          const password = hashPassword(user.password);
+          user.password = password;
         },
       },
-    },
-    gender: {
-      type : DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isIn : [['male', 'female']],
-        notEmpty: {
-          msg: "Gender cannot be empty",
-        },
-      },
-    },
-    role: {
-      type : DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isIn : [['admin', 'customer']],
-        notEmpty: {
-          msg: "Role cannot be empty",
-        },
-      },
-    },
-    balance: {
-      type : DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        min : 0,
-        max : 100000000,
-        notEmpty: {
-          msg: "Balance cannot be empty",
-        },
-      },
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+    }
+  );
+
+  User.prototype.validatePassword = async function (password) {
+    return await comparePassword(password, this.password);
+  };
+
   return User;
 };

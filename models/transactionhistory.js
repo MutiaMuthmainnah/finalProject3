@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class TransactionHistory extends Model {
     /**
@@ -10,36 +8,27 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models,Product);
-      this.belongsTo(models,User);
+      this.belongsTo(models.Product);
+      this.belongsTo(models.User);
     }
   }
-  TransactionHistory.init({
-    quantity: {
-      type : DataTypes.STRING,
-      allowNull: false,
-        validate: {
-          isInt: true,
-          notEmpty: {
-            msg: "Quantity cannot be empty",
-          },
-        },
+  TransactionHistory.init(
+    {
+      ProductId: DataTypes.INTEGER,
+      UserId: DataTypes.INTEGER,
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      total_price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    total_price: {
-      type : DataTypes.STRING,
-      allowNull: false,
-        validate: {
-          isInt: true,
-          notEmpty: {
-            msg: "Total Price cannot be empty",
-          },
-        },
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'TransactionHistory',
-  });
+    {
+      sequelize,
+      modelName: "TransactionHistory",
+    }
+  );
   return TransactionHistory;
 };
