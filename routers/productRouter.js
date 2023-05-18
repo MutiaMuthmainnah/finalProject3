@@ -1,4 +1,3 @@
-//create a router for products
 const router = require("express").Router();
 const { authAdminMiddleware, authMiddleware } = require("../middlewares/auth");
 const { createProduct,

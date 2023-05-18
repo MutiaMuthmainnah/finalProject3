@@ -15,7 +15,7 @@ class ProductController {
             res.status(500).json({ message: err.message });
         }
     }
-    //create a function getAllProducts
+    
     static async getAllProducts(req, res) {
         try {
             const products = await Product.findAll({
@@ -27,7 +27,7 @@ class ProductController {
             res.status(500).json({ message: err.message });
         }
     }
-    //create a function for getProducts by id
+    
     static async getProductsbyId(req, res) {
         try {
             const { productId } = req.params;
@@ -40,7 +40,7 @@ class ProductController {
             res.status(500).json({ message: err.message });
         }
     }
-    //create a function for edit "title,price,stock" by id
+
     static async editProduct(req, res) {
         try {
             const { productId } = req.params;
@@ -58,7 +58,6 @@ class ProductController {
             res.status(500).json({ message: err.message });
         }
     }
-    //create a function for edit "CategoryId" by id
     static async editCategoryId(req, res) {
         try {
             const { productId } = req.params;
@@ -74,7 +73,7 @@ class ProductController {
             res.status(500).json({ message: err.message });
         }
     }
-    //create a function for delete Products by id
+    
     static async deleteProduct(req, res) {
         try {
             const { productId } = req.params;
