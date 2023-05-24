@@ -13,15 +13,15 @@ class TransactionController {
                 return res.status(400).json({ message: "Invalid quantity" });
             }
             if (product.stock - quantity < 5) {
-                return res.status(404).json({ message: "Product is out of stock" });
+                return res.status(400).json({ message: "Product is out of stock" });
             }
             if (product.stock < quantity) {
-                return res.status(404).json({ message: "Not enough stock" });
+                return res.status(400).json({ message: "Not enough stock" });
             }
             const totalprice = product.price * parseInt(quantity);
             const user = await User.findByPk(userId);
             if (user.balance < totalprice) {
-                return res.status(404).json({ message: "Your balance is not enough" });
+                return res.status(400).json({ message: "Your balance is not enough" });
             }
             product.stock -= parseInt(quantity);
             await product.save();
