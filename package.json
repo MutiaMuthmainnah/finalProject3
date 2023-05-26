@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app",
-    "db:migrate:prod": "cross-env NODE_ENV=production sequelize-cli db:migrate"
+    "db:migrate:prod": "cross-env NODE_ENV=production sequelize-cli db:migrate",
+    "db:seeder:prod": "cross-env NODE_ENV=production sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
