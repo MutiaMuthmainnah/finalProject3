@@ -5,7 +5,7 @@ const {
   getAllCategories,
   editCategory,
   deleteCategory,
-} = require("../controllers/categoryController");
+} = require("../controllers/CategoryController");
 
 router.post("/", authAdminMiddleware, createCategory);
 router.get("/", authAdminMiddleware, getAllCategories);
