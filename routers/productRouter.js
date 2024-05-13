@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const { authAdminMiddleware, authMiddleware } = require("../middlewares/auth");
-const { createProduct,
-        getAllProducts,
-        getProductsbyId,
-        editCategoryId,
-        editProduct,
-        deleteProduct
-     } = require("../controllers/ProductController");
+const {
+  createProduct,
+  getAllProducts,
+  getProductsbyId,
+  editCategoryId,
+  editProduct,
+  deleteProduct,
+} = require("../controllers/ProductController");
 
 router.get("/", authMiddleware, getAllProducts);
 router.post("/", authAdminMiddleware, createProduct);

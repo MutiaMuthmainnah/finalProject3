@@ -5,13 +5,13 @@ const { comparePassword } = require("../helpers/bcrypt");
 class UserController {
   static async register(req, res) {
     try {
-      const { full_name, password, gender, email } = req.body;
+      const { full_name, password, gender, email, role } = req.body;
       const newUser = await User.create({
         full_name,
         email,
         password,
         gender,
-        role: "customer",
+        role,
       });
       const formattedBalance = parseInt(newUser.balance).toLocaleString(
         "id-ID",
